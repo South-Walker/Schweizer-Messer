@@ -44,23 +44,23 @@ public class Background : MonoBehaviour {
             }
             else if (touch.phase == TouchPhase.Moved)
             {
-                offsetX = offsetX + touchPrePosition.x - touchBeginPosition.x;
+                offsetX = offsetX + touch.position.x - touchPrePosition.x;
                 touchPrePosition = touch.position;
             }
         }
 	}
     private void OnGUI()
     {
+        GUI.matrix = guiMatrix;
         drawBackground();
     }
     private void drawBackground()
     {
-        GUI.matrix = guiMatrix;
         float nowx = offsetX;
         foreach (var part in nowBackground)
         {
             GUI.DrawTexture(new Rect(beginX + nowx, 0, Const.designWidth, Const.designHeight), part);
-            nowx += part.width;
+            nowx += Const.designWidth;
         }
     }
     public bool isDay()
