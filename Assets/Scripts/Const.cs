@@ -5,7 +5,7 @@ using UnityEngine;
 public class Const : MonoBehaviour {
     public const float  designWidth = 480f;
     public const float designHeight = 800f;
-
+    public static Matrix4x4 guiMatrix = getMatrix();
     public static Matrix4x4 getMatrix()
     {
         Matrix4x4 guiMatrix = Matrix4x4.identity;
@@ -20,5 +20,9 @@ public class Const : MonoBehaviour {
         Matrix4x4 guiInverseMatrix = getMatrix();
         guiInverseMatrix = Matrix4x4.Inverse(guiInverseMatrix);
         return guiInverseMatrix;
+    }
+    private void OnGUI()
+    {
+        guiMatrix = getMatrix();
     }
 }

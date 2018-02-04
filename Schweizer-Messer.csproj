@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>Android:13</UnityBuildTarget>
     <UnityVersion>2017.2.0f3</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -220,7 +222,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Const.cs" />
-    <Compile Include="Assets\Scripts\MenuScripts\Background.cs" />
+    <Compile Include="Assets\Scripts\IGUILayer.cs" />
+    <Compile Include="Assets\Scripts\MenuScripts\ArrowLayer.cs" />
+    <Compile Include="Assets\Scripts\MenuScripts\BackgroundLayer.cs" />
+    <Compile Include="Assets\Scripts\MenuScripts\ButtonLayer.cs" />
+    <Compile Include="Assets\Scripts\MenuScripts\GUIDrawer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
