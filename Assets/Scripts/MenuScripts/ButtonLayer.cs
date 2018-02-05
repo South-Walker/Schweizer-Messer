@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using Assets.Scripts;
 using UnityEngine;
 
@@ -39,7 +40,10 @@ public class ButtonLayer : MonoBehaviour,IGUILayer {
         var position = new Vector2(Const.designWidth / 2, Const.designHeight / 2) - size / 2;
         if (GUI.Button(new Rect(position, size), "", buttonStyle[BackgroundLayer.currentIndex]))
         {
-
+            if (BackgroundLayer.currentIndex == 1)
+            {
+                SceneManager.LoadScene("FantasyPlanetScene");
+            }
         }
     }
     public void resetData()
