@@ -52,74 +52,8 @@ public class GE_FantasySkyboxFREE_Demo : MonoBehaviour
 	// http://docs.unity3d.com/ScriptReference/MonoBehaviour.Start.html
 	void Start ()
 	{
-		/*
 		// Manually set fog color in m_LightAndSkyList
-
-		// Fog Night
-		m_LightAndSkyList[0].m_FogColor =	new Color(0.1176470588235294f,0.196078431372549f,0.392156862745098f,1f);
-		m_LightAndSkyList[1].m_FogColor =	new Color(0.1176470588235294f,0.196078431372549f,0.392156862745098f,1f);
-		m_LightAndSkyList[2].m_FogColor =	new Color(0.0784313725490196f,0.1568627450980392f,0.392156862745098f,1f);
-		m_LightAndSkyList[3].m_FogColor =	new Color(0.0784313725490196f,0.1568627450980392f,0.392156862745098f,1f);
-
-		// Fog Sunny
-		m_LightAndSkyList[4].m_FogColor =	new Color(0.431372549f,0.705882353f,1f,1f);
-		m_LightAndSkyList[5].m_FogColor =	new Color(0.431372549f,0.705882353f,1f,1f);
-		m_LightAndSkyList[6].m_FogColor =	new Color(0.352941176f,0.823529412f,1f,1f);
-		m_LightAndSkyList[7].m_FogColor =	new Color(0.352941176f,0.823529412f,1f,1f);
-		m_LightAndSkyList[8].m_FogColor =	new Color(0.745098039f,0.901960784f,0.901960784f,1f);
-		m_LightAndSkyList[9].m_FogColor =	new Color(0.745098039f,0.901960784f,0.901960784f,1f);
-		m_LightAndSkyList[10].m_FogColor =	new Color(0.666666667f,0.784313725f,0.960784314f,1f);
-		m_LightAndSkyList[11].m_FogColor =	new Color(0.666666667f,0.784313725f,0.960784314f,1f);
-		m_LightAndSkyList[12].m_FogColor =	new Color(0.490196078f,0.784313725f,0.960784314f,1f);
-		m_LightAndSkyList[13].m_FogColor =	new Color(0.490196078f,0.784313725f,0.960784314f,1f);
-		m_LightAndSkyList[14].m_FogColor =	new Color(0.784313725f,0.823529412f,1f,1f);
-		m_LightAndSkyList[15].m_FogColor =	new Color(0.784313725f,0.823529412f,1f,1f);
-		m_LightAndSkyList[16].m_FogColor =	new Color(0.901960784f,1f,1f,1f);
-		m_LightAndSkyList[17].m_FogColor =	new Color(0.901960784f,1f,1f,1f);
-		m_LightAndSkyList[18].m_FogColor =	new Color(0.705882353f,0.862745098f,1f,1f);
-		m_LightAndSkyList[19].m_FogColor =	new Color(0.705882353f,0.862745098f,1f,1f);
-		m_LightAndSkyList[20].m_FogColor =	new Color(0.62745098f,0.901960784f,1f,1f);
-		m_LightAndSkyList[21].m_FogColor =	new Color(0.62745098f,0.901960784f,1f,1f);
-		m_LightAndSkyList[22].m_FogColor =	new Color(0.823529412f,0.901960784f,0.784313725f,1f);
-		m_LightAndSkyList[23].m_FogColor =	new Color(0.823529412f,0.901960784f,0.784313725f,1f);
-		m_LightAndSkyList[24].m_FogColor =	new Color(0.62745098f,0.901960784f,1f,1f);
-		m_LightAndSkyList[25].m_FogColor =	new Color(0.62745098f,0.901960784f,1f,1f);
-		m_LightAndSkyList[26].m_FogColor =	new Color(0.6431372549019608f,0.8509803921568627f,1f,1f);
-		m_LightAndSkyList[27].m_FogColor =	new Color(0.6431372549019608f,0.8509803921568627f,1f,1f);
-
-		// Ambient Night
-		m_LightAndSkyList[0].m_AmbientLight =	new Color(0.1372549019607843f,0.1372549019607843f,0.1372549019607843f,1f);
-		m_LightAndSkyList[1].m_AmbientLight =	new Color(0.1372549019607843f,0.1372549019607843f,0.1372549019607843f,1f);
-		m_LightAndSkyList[2].m_AmbientLight =	new Color(0.1372549019607843f,0.1372549019607843f,0.1372549019607843f,1f);
-		m_LightAndSkyList[3].m_AmbientLight =	new Color(0.1372549019607843f,0.1372549019607843f,0.1372549019607843f,1f);
-
-		// Ambient Sunny
-		m_LightAndSkyList[4].m_AmbientLight =	new Color(0.62745098f,0.705882353f,0.705882353f,1f);
-		m_LightAndSkyList[5].m_AmbientLight =	new Color(0.62745098f,0.705882353f,0.705882353f,1f);
-		m_LightAndSkyList[6].m_AmbientLight =	new Color(0.705882353f,0.705882353f,0.705882353f,1f);
-		m_LightAndSkyList[7].m_AmbientLight =	new Color(0.705882353f,0.705882353f,0.705882353f,1f);
-		m_LightAndSkyList[8].m_AmbientLight =	new Color(0.705882353f,0.705882353f,0.705882353f,1f);
-		m_LightAndSkyList[9].m_AmbientLight =	new Color(0.705882353f,0.705882353f,0.705882353f,1f);
-		m_LightAndSkyList[10].m_AmbientLight =	new Color(0.62745098f,0.62745098f,0.666666667f,1f);
-		m_LightAndSkyList[11].m_AmbientLight =	new Color(0.62745098f,0.62745098f,0.666666667f,1f);
-		m_LightAndSkyList[12].m_AmbientLight =	new Color(0.549019608f,0.588235294f,0.705882353f,1f);
-		m_LightAndSkyList[13].m_AmbientLight =	new Color(0.549019608f,0.588235294f,0.705882353f,1f);
-		m_LightAndSkyList[14].m_AmbientLight =	new Color(0.666666667f,0.705882353f,0.745098039f,1f);
-		m_LightAndSkyList[15].m_AmbientLight =	new Color(0.666666667f,0.705882353f,0.745098039f,1f);
-		m_LightAndSkyList[16].m_AmbientLight =	new Color(0.745098039f,0.745098039f,0.784313725f,1f);
-		m_LightAndSkyList[17].m_AmbientLight =	new Color(0.745098039f,0.745098039f,0.784313725f,1f);
-		m_LightAndSkyList[18].m_AmbientLight =	new Color(0.745098039f,0.745098039f,0.745098039f,1f);
-		m_LightAndSkyList[19].m_AmbientLight =	new Color(0.745098039f,0.745098039f,0.745098039f,1f);
-		m_LightAndSkyList[20].m_AmbientLight =	new Color(0.745098039f,0.745098039f,0.666666667f,1f);
-		m_LightAndSkyList[21].m_AmbientLight =	new Color(0.745098039f,0.745098039f,0.666666667f,1f);
-		m_LightAndSkyList[22].m_AmbientLight =	new Color(0.745098039f,0.745098039f,0.666666667f,1f);
-		m_LightAndSkyList[23].m_AmbientLight =	new Color(0.745098039f,0.745098039f,0.666666667f,1f);
-		m_LightAndSkyList[24].m_AmbientLight =	new Color(0.745098039f,0.745098039f,0.745098039f,1f);
-		m_LightAndSkyList[25].m_AmbientLight =	new Color(0.745098039f,0.745098039f,0.745098039f,1f);
-		m_LightAndSkyList[26].m_AmbientLight =	new Color(0.5098039215686275f,0.5098039215686275f,0.5098039215686275f,1f);
-		m_LightAndSkyList[27].m_AmbientLight =	new Color(0.5098039215686275f,0.5098039215686275f,0.5098039215686275f,1f);
-		*/
-
+        
 		// Display first skybox in m_LightAndSkyList
 		SwitchSkyBox(0);
 	}
