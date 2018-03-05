@@ -289,7 +289,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Const.cs" />
-    <Compile Include="Assets\Scripts\FantasyPlanetScripts\GE_FantasySkyboxFREE_Demo.cs" />
+    <Compile Include="Assets\Scripts\FantasyPlanetScripts\SkyboxController.cs" />
     <Compile Include="Assets\Scripts\IGUILayer.cs" />
     <Compile Include="Assets\Scripts\MenuScripts\ArrowLayer.cs" />
     <Compile Include="Assets\Scripts\MenuScripts\BackgroundLayer.cs" />

@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 7e4024464a7f63a408ac3c1225f094f9, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 8469ce1fab4125642828260f0b734491, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -1253,7 +1253,7 @@ GameObject:
   - component: {fileID: 347447215}
   - component: {fileID: 347447216}
   m_Layer: 0
-  m_Name: Light - FS Night 01A
+  m_Name: Evening
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1485,7 +1485,7 @@ GameObject:
   - component: {fileID: 446887046}
   - component: {fileID: 446887047}
   m_Layer: 0
-  m_Name: Light - FS Night 01B
+  m_Name: Midnight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3264,7 +3264,7 @@ GameObject:
   - component: {fileID: 742006806}
   - component: {fileID: 742006807}
   m_Layer: 0
-  m_Name: Light - FS Sunny 01B
+  m_Name: Noon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3989,7 +3989,7 @@ GameObject:
   - component: {fileID: 972737533}
   - component: {fileID: 972737532}
   m_Layer: 0
-  m_Name: Light - FS Sunny 01A
+  m_Name: Morning
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6319,7 +6319,7 @@ GameObject:
   - component: {fileID: 1765324062}
   - component: {fileID: 1765324060}
   - component: {fileID: 1765324059}
-  - component: {fileID: 1765324058}
+  - component: {fileID: 1765324061}
   m_Layer: 0
   m_Name: FirstPersonCharacterController
   m_TagString: Untagged
@@ -6327,39 +6327,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1765324058
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114050149779796174, guid: de0245cda381bb143abf07154b6a7f4c,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1765324057}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd20d0f79464f704297b35c23b31b388, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_LightAndSkyList:
-  - m_Name: FS Night 01A
-    m_Light: {fileID: 347447216}
-    m_Skybox: {fileID: 2100000, guid: 5ce75119787234e4aae0598fcc619b45, type: 2}
-    m_FogColor: {r: 0.11764706, g: 0.19607843, b: 0.39215687, a: 1}
-    m_AmbientLight: {r: 0.13725491, g: 0.13725491, b: 0.13725491, a: 1}
-  - m_Name: FS Night 01B
-    m_Light: {fileID: 446887047}
-    m_Skybox: {fileID: 2100000, guid: e7471c7bc3e48f8408ba34ff15fec1e5, type: 2}
-    m_FogColor: {r: 0.078431375, g: 0.15686275, b: 0.39215687, a: 1}
-    m_AmbientLight: {r: 0.13725491, g: 0.13725491, b: 0.13725491, a: 1}
-  - m_Name: FS Sunny 01A
-    m_Light: {fileID: 972737532}
-    m_Skybox: {fileID: 2100000, guid: 7d1430089afb5854892670b854d1d684, type: 2}
-    m_FogColor: {r: 0.43137255, g: 0.7019608, b: 0.99607843, a: 1}
-    m_AmbientLight: {r: 0.62352943, g: 0.7019608, b: 0.7019608, a: 1}
-  - m_Name: FS Sunny 01B
-    m_Light: {fileID: 742006807}
-    m_Skybox: {fileID: 2100000, guid: 7e4024464a7f63a408ac3c1225f094f9, type: 2}
-    m_FogColor: {r: 0.3529412, g: 0.81960785, b: 0.99607843, a: 1}
-    m_AmbientLight: {r: 0.7019608, g: 0.7019608, b: 0.7019608, a: 1}
 --- !u!82 &1765324059
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6457,6 +6424,38 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1765324061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1765324057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c32f71ce3958f244287a98365d6b3941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_LightAndSkyList:
+  - Name: Evening
+    Light: {fileID: 347447216}
+    Skybox: {fileID: 2100000, guid: 53e33a3a2136c1f49b71e38787e0823b, type: 2}
+    FogColor: {r: 0.11764707, g: 0.19607845, b: 0.3921569, a: 1}
+    AmbientLight: {r: 0.13725491, g: 0.13725491, b: 0.13725491, a: 1}
+  - Name: Midnight
+    Light: {fileID: 446887047}
+    Skybox: {fileID: 2100000, guid: 9251e42fd91fbe544bb88f1d27c5b283, type: 2}
+    FogColor: {r: 0.078431375, g: 0.15686275, b: 0.3921569, a: 1}
+    AmbientLight: {r: 0.13725491, g: 0.13725491, b: 0.13725491, a: 1}
+  - Name: Morning
+    Light: {fileID: 972737532}
+    Skybox: {fileID: 2100000, guid: 6e1ffb70e1f61264ab484fffdc5d49e4, type: 2}
+    FogColor: {r: 0.43137258, g: 0.7019608, b: 0.9960785, a: 1}
+    AmbientLight: {r: 0.62352943, g: 0.7019608, b: 0.7019608, a: 1}
+  - Name: Noon
+    Light: {fileID: 742006807}
+    Skybox: {fileID: 2100000, guid: 8469ce1fab4125642828260f0b734491, type: 2}
+    FogColor: {r: 0.3529412, g: 0.8196079, b: 0.9960785, a: 1}
+    AmbientLight: {r: 0.7019608, g: 0.7019608, b: 0.7019608, a: 1}
 --- !u!143 &1765324062
 CharacterController:
   m_ObjectHideFlags: 0
