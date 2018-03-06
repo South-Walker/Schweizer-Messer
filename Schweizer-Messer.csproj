@@ -289,13 +289,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Const.cs" />
+    <Compile Include="Assets\Scripts\FantasyPlanetScripts\ClassTableLayer.cs" />
+    <Compile Include="Assets\Scripts\FantasyPlanetScripts\FPGUIDrawer.cs" />
     <Compile Include="Assets\Scripts\FantasyPlanetScripts\SkyboxController.cs" />
     <Compile Include="Assets\Scripts\IGUILayer.cs" />
     <Compile Include="Assets\Scripts\MenuScripts\ArrowLayer.cs" />
     <Compile Include="Assets\Scripts\MenuScripts\BackgroundLayer.cs" />
     <Compile Include="Assets\Scripts\MenuScripts\ButtonLayer.cs" />
-    <Compile Include="Assets\Scripts\MenuScripts\GUIDrawer.cs" />
+    <Compile Include="Assets\Scripts\MenuScripts\MenuGUIDrawer.cs" />
     <Compile Include="Assets\Scripts\MenuScripts\ScenesController.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Data\classtable.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

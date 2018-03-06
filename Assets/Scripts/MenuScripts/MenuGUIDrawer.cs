@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using Assets.Scripts;
 using UnityEngine;
 
-public class GUIDrawer : MonoBehaviour
+public class MenuGUIDrawer
+    : MonoBehaviour
 {
     // Use this for initialization
     void Start()
