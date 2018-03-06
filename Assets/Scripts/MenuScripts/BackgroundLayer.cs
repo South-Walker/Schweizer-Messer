@@ -9,6 +9,8 @@ public class BackgroundLayer : MonoBehaviour,IGUILayer
 
     public Texture2D[] dayBackground = new Texture2D[3];
     public Texture2D[] nightBackground = new Texture2D[3];
+    public Texture2D endingDayBackground;
+    public Texture2D endingNightBackground;
     public static bool isMoving
     {
         get
@@ -29,6 +31,17 @@ public class BackgroundLayer : MonoBehaviour,IGUILayer
         private set
         {
             _istouching = value;
+        }
+    }
+    public static bool isEnding
+    {
+        get
+        {
+            return _isending;
+        }
+        private set
+        {
+            _isending = value;
         }
     }
     public static int currentIndex
@@ -68,10 +81,25 @@ public class BackgroundLayer : MonoBehaviour,IGUILayer
             _nowbackground = value;
         }
     }
+    private Texture2D nowEndingBackground
+    {
+        get
+        {
+            if (_nowendingbackground == null)
+                _nowendingbackground = (isDay()) ? endingDayBackground : endingNightBackground;
+            return _nowendingbackground;
+        }
+        set
+        {
+            _nowendingbackground = value;
+        }
+    }
     private Texture2D[] _nowbackground;
+    private Texture2D _nowendingbackground;
     private static int _currentindex;
     private static bool _istouching = false;
     private static bool _ismoving = false;
+    private static bool _isending = false;
     private const float beginX = -1 * Const.designWidth;
     private const float maxOffsetX = Const.designWidth;
     private const float minOffsetX = Const.designWidth * -1;
@@ -108,6 +136,10 @@ public class BackgroundLayer : MonoBehaviour,IGUILayer
             {
                 isMoving = false;
                 offsetX = aimX;
+                if (isEnding)
+                {
+                    ScenesController.ChangeScene();
+                }
             }
             else
             {
@@ -154,10 +186,17 @@ public class BackgroundLayer : MonoBehaviour,IGUILayer
     public void Draw()
     {
         float nowx = offsetX;
-        foreach (var part in nowBackground)
+        if (!isEnding)
         {
-            GUI.DrawTexture(new Rect(beginX + nowx, 0, Const.designWidth, Const.designHeight), part);
-            nowx += Const.designWidth;
+            foreach (var part in nowBackground)
+            {
+                GUI.DrawTexture(new Rect(beginX + nowx, 0, Const.designWidth, Const.designHeight), part);
+                nowx += Const.designWidth;
+            }
+        }
+        else
+        {
+            GUI.DrawTexture(new Rect(beginX + nowx, 0, Const.designWidth * 3, Const.designHeight), nowEndingBackground);
         }
     }
     private float getNaturalX(int currentIndex)
@@ -176,8 +215,15 @@ public class BackgroundLayer : MonoBehaviour,IGUILayer
         offsetX = 0;
         currentIndex = 1;
         nowBackground = null;
+        nowEndingBackground = null;
         isMoving = false;
         isTouching = false;
+        isEnding = false;
+    }
+    public static void endBackground()
+    {
+        currentIndex = 1;
+        isEnding = true;
     }
     public bool getFlag()
     {

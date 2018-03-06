@@ -118,7 +118,6 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.Spa
 c01275a603c29dd6acf135571675651b Assembly-CSharp.dll:.ButtonLayer
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Advertisements.dll:UnityEngine.Advertisements.CallbackExecutor
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Advertisements.dll:UnityEngine.Advertisements.Editor.Placeholder
-7b1e25dae21f10af340b2c5f2631d9bf Assembly-CSharp.dll:.GE_FantasySkyboxFREE_Demo
 fc1e0f4d8439d9928083474691511a13 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkAnimator
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Networking.dll:UnityEngine.Networking.NetworkBehaviour
 60b2bb652410a5867a5ab9a01cd38461 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkDiscovery
@@ -145,4 +144,6 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.Spa
 45f3431f0103c41611e8d4eec3d439df UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingRenderer
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Const
 9de3a22eca9aefadba2d10d5987cefe3 UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
-fad13f0fe39c588ae9e4386e168bfdcc Assembly-CSharp.dll:.BackgroundLayer
+6e9820086c3ed5b798d9a85b0aff3098 Assembly-CSharp.dll:.BackgroundLayer
+518aed53d6d27fc5cc0b412d2fe29ba4 Assembly-CSharp.dll:.SkyboxController
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.ScenesController

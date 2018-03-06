@@ -38,6 +38,6 @@ public class ArrowLayer : MonoBehaviour,IGUILayer{
     }
     public bool getFlag()
     {
-        return !(BackgroundLayer.isMoving || BackgroundLayer.isTouching);
+        return !(BackgroundLayer.isMoving || BackgroundLayer.isTouching || BackgroundLayer.isEnding);
     }
 }

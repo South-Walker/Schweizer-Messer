@@ -6435,27 +6435,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c32f71ce3958f244287a98365d6b3941, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_LightAndSkyList:
+  LightAndSkyList:
   - Name: Evening
     Light: {fileID: 347447216}
     Skybox: {fileID: 2100000, guid: 53e33a3a2136c1f49b71e38787e0823b, type: 2}
-    FogColor: {r: 0.11764707, g: 0.19607845, b: 0.3921569, a: 1}
+    FogColor: {r: 0.11764706, g: 0.19607843, b: 0.39215687, a: 1}
     AmbientLight: {r: 0.13725491, g: 0.13725491, b: 0.13725491, a: 1}
   - Name: Midnight
     Light: {fileID: 446887047}
     Skybox: {fileID: 2100000, guid: 9251e42fd91fbe544bb88f1d27c5b283, type: 2}
-    FogColor: {r: 0.078431375, g: 0.15686275, b: 0.3921569, a: 1}
+    FogColor: {r: 0.11764706, g: 0.19607843, b: 0.39215687, a: 1}
     AmbientLight: {r: 0.13725491, g: 0.13725491, b: 0.13725491, a: 1}
   - Name: Morning
     Light: {fileID: 972737532}
     Skybox: {fileID: 2100000, guid: 6e1ffb70e1f61264ab484fffdc5d49e4, type: 2}
-    FogColor: {r: 0.43137258, g: 0.7019608, b: 0.9960785, a: 1}
-    AmbientLight: {r: 0.62352943, g: 0.7019608, b: 0.7019608, a: 1}
+    FogColor: {r: 0.43137255, g: 0.7058824, b: 1, a: 1}
+    AmbientLight: {r: 0.627451, g: 0.7058824, b: 0.7058824, a: 1}
   - Name: Noon
     Light: {fileID: 742006807}
     Skybox: {fileID: 2100000, guid: 8469ce1fab4125642828260f0b734491, type: 2}
-    FogColor: {r: 0.3529412, g: 0.8196079, b: 0.9960785, a: 1}
-    AmbientLight: {r: 0.7019608, g: 0.7019608, b: 0.7019608, a: 1}
+    FogColor: {r: 0.43137255, g: 0.7058824, b: 1, a: 1}
+    AmbientLight: {r: 0.627451, g: 0.7058824, b: 0.7058824, a: 1}
 --- !u!143 &1765324062
 CharacterController:
   m_ObjectHideFlags: 0

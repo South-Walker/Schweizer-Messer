@@ -42,8 +42,17 @@ public class ButtonLayer : MonoBehaviour,IGUILayer {
         {
             if (BackgroundLayer.currentIndex == 1)
             {
-                SceneManager.LoadScene("FantasyPlanetScene");
+                ScenesController.LoadScene("FantasyPlanetScene");
             }
+            else if (BackgroundLayer.currentIndex == 0)
+            {
+                ScenesController.LoadScene("FantasyPlanetScene");
+            }
+            else
+            {
+                ScenesController.LoadScene("FantasyPlanetScene");
+            }
+            BackgroundLayer.endBackground();
         }
     }
     public void resetData()
@@ -53,7 +62,7 @@ public class ButtonLayer : MonoBehaviour,IGUILayer {
     }
     public bool getFlag()
     {
-        if (BackgroundLayer.isMoving || BackgroundLayer.isTouching) 
+        if (BackgroundLayer.isMoving || BackgroundLayer.isTouching || BackgroundLayer.isEnding)  
         {
             scaleFlag = false;
             scaleFactor = 0;
