@@ -40,7 +40,6 @@ public class ClassTableLayer : MonoBehaviour,IGUILayer {
         Texture2D tImg = new Texture2D(ClassTableDrawer.classtablewidth, ClassTableDrawer.classtableheight);
         tImg.LoadImage(bImg);
         GUI.DrawTexture(new Rect(0, 0, ClassTableDrawer.classtablewidth, ClassTableDrawer.classtableheight), tImg);
-
     }
 }
 public static class ExpandGraphics
