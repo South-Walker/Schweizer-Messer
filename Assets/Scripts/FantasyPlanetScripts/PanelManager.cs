@@ -4,28 +4,35 @@ using UnityEngine.EventSystems;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.FantasyPlanetScripts;
 
 public class PanelManager : MonoBehaviour {
-    public GameObject BlueDayWindow;
-    public GameObject GreenDayWindow;
-    public GameObject RedDayWindow;
+    public GameObject blueDayWindow;
+    public GameObject greenDayWindow;
+    public GameObject redDayWindow;
+    public TextAsset htmlClasstable;
     private DateTime date;
+    private ClassTableob Classtable;
     private LoopChainTable<GameObject> prefabs;
     public Animator initiallyOpen;
     public Transform parentOfClasstable;
-	private int m_OpenParameterId;
-	private Animator m_Open;
+	private int OpenParameterId;
+	private Animator Open;
 
 	const string k_OpenTransitionName = "Open";
 	const string k_ClosedStateName = "Closed";
-
-	public void OnEnable()
-	{
-		m_OpenParameterId = Animator.StringToHash (k_OpenTransitionName);
+    public void Start()
+    {
         date = DateTime.Now;
-        prefabs = new LoopChainTable<GameObject>(BlueDayWindow);
-        prefabs.Add(GreenDayWindow);
-        prefabs.Add(RedDayWindow);
+    }
+    public void OnEnable()
+    {
+        Classtable = new ClassTableob(htmlClasstable.text);
+        OpenParameterId = Animator.StringToHash (k_OpenTransitionName);
+        date = DateTime.Now;
+        prefabs = new LoopChainTable<GameObject>(blueDayWindow);
+        prefabs.Add(greenDayWindow);
+        prefabs.Add(redDayWindow);
 		if (initiallyOpen == null)
 			return;
 
@@ -33,7 +40,7 @@ public class PanelManager : MonoBehaviour {
 	}
 	public void OpenPanel (Animator anim)
 	{
-		if (m_Open == anim)
+		if (Open == anim)
 			return;
 		anim.gameObject.SetActive(true);
 
@@ -41,31 +48,42 @@ public class PanelManager : MonoBehaviour {
 
 		CloseCurrent();
         
-		m_Open = anim;
-		m_Open.SetBool(m_OpenParameterId, true);
+		Open = anim;
+		Open.SetBool(OpenParameterId, true);
 	}
     public void NextDay()
     {
-        GameObject nowPrefab = prefabs.MoveNext();
-        var newTable = Instantiate(nowPrefab, parentOfClasstable, false);
+        date = date.AddDays(1);
+        GameObject newTable = Instantiate(prefabs.MoveNext(), parentOfClasstable, false);
+        TableManager tableManager = newTable.AddComponent<TableManager>();
+        tableManager.Initialize(date, Classtable);
         OpenPanel(newTable.GetComponent<Animator>());
-
     }
     public void YesterDay()
     {
-        GameObject nowPrefab = prefabs.MoveBack();
-        var newTable = Instantiate(nowPrefab, parentOfClasstable, false);
+        date = date.AddDays(-1);
+        GameObject newTable = Instantiate(prefabs.MoveBack(), parentOfClasstable, false);
+        TableManager tableManager = newTable.AddComponent<TableManager>();
+        tableManager.Initialize(date, Classtable);
+        OpenPanel(newTable.GetComponent<Animator>());
+    }
+    public void ChangeWeeknum(int newWeeknum)
+    {
+        date = Classtable.getMondayDate(newWeeknum);
+        GameObject newTable = Instantiate(prefabs.MoveBack(), parentOfClasstable, false);
+        TableManager tableManager = newTable.AddComponent<TableManager>();
+        tableManager.Initialize(date, Classtable);
         OpenPanel(newTable.GetComponent<Animator>());
     }
 	public void CloseCurrent()
 	{
-		if (m_Open == null)
+		if (Open == null)
 			return;
 
         EventSystem.current.SetSelectedGameObject(null);
-        m_Open.SetBool(m_OpenParameterId, false);
-		StartCoroutine(DisablePanelDeleyed(m_Open));
-		m_Open = null;
+        Open.SetBool(OpenParameterId, false);
+		StartCoroutine(DisablePanelDeleyed(Open));
+		Open = null;
 
 	}
 	IEnumerator DisablePanelDeleyed(Animator anim)
@@ -77,7 +95,7 @@ public class PanelManager : MonoBehaviour {
 			if (!anim.IsInTransition(0))
 				closedStateReached = anim.GetCurrentAnimatorStateInfo(0).IsName(k_ClosedStateName);
 
-			wantToClose = !anim.GetBool(m_OpenParameterId);
+			wantToClose = !anim.GetBool(OpenParameterId);
 
 			yield return new WaitForEndOfFrame();
 		}

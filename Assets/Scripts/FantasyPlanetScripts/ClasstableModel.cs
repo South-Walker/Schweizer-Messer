@@ -151,6 +151,20 @@ namespace Assets.Scripts.FantasyPlanetScripts
             int days = (today - this.TermBegin).Days;
             return days / 7 + 1;
         }
+        public DateTime getMondayDate(int weeknum = 0)
+        {
+            if (weeknum == 0)
+                return TermBegin;
+            else
+            {
+                DateTime result = TermBegin.AddDays(weeknum * 7);
+                while ((int)result.DayOfWeek == 1)
+                {
+                    result = result.AddDays(-1);
+                }
+                return result;
+            }
+        }
         private static int getweekcode(DateTime today)
         {
             return (int)today.DayOfWeek;
