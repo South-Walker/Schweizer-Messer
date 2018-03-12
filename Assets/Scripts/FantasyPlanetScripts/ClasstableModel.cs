@@ -78,6 +78,12 @@ namespace Assets.Scripts.FantasyPlanetScripts
                     ClassTable.Add(list);
                 }
             }
+            Regex songti = new Regex("<font face=\"宋体\" color=\"Black\">");
+            html = songti.Replace(html, "");
+            Regex zhiti = new Regex("</font>");
+            html = zhiti.Replace(html, "");
+            Regex zhihao = new Regex("<font size=\"?1\"?>");
+            html = zhihao.Replace(html, "");
             Regex regex = new Regex("<table[^>]*>.*</Table>");
             Match m = regex.Match(html);
             regex = new Regex("<tr[^>]*>.*?</tr[^>]*>");
@@ -91,10 +97,10 @@ namespace Assets.Scripts.FantasyPlanetScripts
             {
                 m = mc[trnum];
                 string now = m.Value;
-                if (Regex.IsMatch(now, "tr height=24"))
+                if (Regex.IsMatch(now, "tr height=\"?24\"?"))
                 {
                     thiscolor = rc.Next();
-                    regex = new Regex("<td[^>]*rowspan=(?<howmanytimes>\\d+)[^>]*>(?<class>[^<]*)</td><td[^>]*>\\d+</td><td[^>]*>(?<teacher>[^<]*)</td><td[^>]*>(?<date>[^<]*)</td><td [^>]*>(?<room>[^<]*)</td><td[^>]*>[^<]*</td><td[^>]*>[^<]*</td><td[^>]*>[^<]*</td></tr>");
+                    regex = new Regex("<td[^>]*>(?<class>[^<]*)</td><td[^>]*>\\d+</td><td[^>]*>(?<teacher>[^<]*)</td><td[^>]*>(?<date>[^<]*)</td><td [^>]*>(?<room>[^<]*)</td><td[^>]*>[^<]*</td><td[^>]*>[^<]*</td><td[^>]*>[^<]*</td></tr>");
                     m = regex.Match(now);
                     GroupCollection gc = m.Groups;
                     teacher = gc["teach"].Value;

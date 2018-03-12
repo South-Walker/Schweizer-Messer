@@ -15,7 +15,7 @@ ff05dcdf90651c3d98a9cad3df5e471e UnityEngine.Timeline.dll:UnityEngine.Timeline.C
 31aaf521b3ef8699466676591ea0efd4 UnityEngine.Timeline.dll:UnityEngine.Timeline.GroupTrack
 31aaf521b3ef8699466676591ea0efd4 UnityEngine.Timeline.dll:UnityEngine.Timeline.PlayableTrack
 df374c01140c2d578bf70cbd60073d1d UnityEngine.Timeline.dll:UnityEngine.Timeline.TimelineAsset
-3402ef44e6b69aebdab32acee8103f4a Assembly-CSharp.dll:.PanelManager
+37a15206c1f124629332325aa623ee8a Assembly-CSharp.dll:.PanelManager
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.MenuGUIDrawer
 a35dc9cca2faebc5f5f1aeb9e8e47bbe UnityEngine.UI.dll:UnityEngine.UI.AspectRatioFitter
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.UI.dll:UnityEngine.EventSystems.BaseInput
@@ -117,6 +117,7 @@ bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.Audi
 463516d5b5fe8e67a0a24c48f2095b04 UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInputModule
 c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingCollider
 45f3431f0103c41611e8d4eec3d439df UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingRenderer
+0bd808ce1ffd1b45a39b2496c65c8f23 Assembly-CSharp.dll:.MenuManager
 c01275a603c29dd6acf135571675651b Assembly-CSharp.dll:.ButtonLayer
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Advertisements.dll:UnityEngine.Advertisements.CallbackExecutor
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Advertisements.dll:UnityEngine.Advertisements.Editor.Placeholder
@@ -147,7 +148,6 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.Spa
 45f3431f0103c41611e8d4eec3d439df UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingRenderer
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Const
 9de3a22eca9aefadba2d10d5987cefe3 UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.TableManager
 6e9820086c3ed5b798d9a85b0aff3098 Assembly-CSharp.dll:.BackgroundLayer
 518aed53d6d27fc5cc0b412d2fe29ba4 Assembly-CSharp.dll:.SkyboxController
-b92b0fb12febb347132a0c1b5dcf2381 Assembly-CSharp.dll:.ClassTableLayer
-0bd808ce1ffd1b45a39b2496c65c8f23 Assembly-CSharp.dll:.MenuManager

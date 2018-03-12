@@ -18,27 +18,31 @@ public class PanelManager : MonoBehaviour {
     public Transform parentOfClasstable;
 	private int OpenParameterId;
 	private Animator Open;
+    private bool hasTable = false;
 
 	const string k_OpenTransitionName = "Open";
 	const string k_ClosedStateName = "Closed";
     public void Start()
     {
         date = DateTime.Now;
-    }
-    public void OnEnable()
-    {
-        Classtable = new ClassTableob(htmlClasstable.text);
-        OpenParameterId = Animator.StringToHash (k_OpenTransitionName);
-        date = DateTime.Now;
         prefabs = new LoopChainTable<GameObject>(blueDayWindow);
         prefabs.Add(greenDayWindow);
         prefabs.Add(redDayWindow);
+        Classtable = new ClassTableob(htmlClasstable.text);
+    }
+    public void OnEnable()
+    {
+        OpenParameterId = Animator.StringToHash (k_OpenTransitionName);
 		if (initiallyOpen == null)
 			return;
-
-		OpenPanel(initiallyOpen);
+        OpenPanel(initiallyOpen);
 	}
-	public void OpenPanel (Animator anim)
+    public void Update()
+    {
+        if (!hasTable)
+            CreateAndOpenTable(prefabs.MoveNext());
+    }
+    public void OpenPanel (Animator anim)
 	{
 		if (Open == anim)
 			return;
@@ -54,26 +58,17 @@ public class PanelManager : MonoBehaviour {
     public void NextDay()
     {
         date = date.AddDays(1);
-        GameObject newTable = Instantiate(prefabs.MoveNext(), parentOfClasstable, false);
-        TableManager tableManager = newTable.AddComponent<TableManager>();
-        tableManager.Initialize(date, Classtable);
-        OpenPanel(newTable.GetComponent<Animator>());
+        CreateAndOpenTable(prefabs.MoveNext());
     }
     public void YesterDay()
     {
         date = date.AddDays(-1);
-        GameObject newTable = Instantiate(prefabs.MoveBack(), parentOfClasstable, false);
-        TableManager tableManager = newTable.AddComponent<TableManager>();
-        tableManager.Initialize(date, Classtable);
-        OpenPanel(newTable.GetComponent<Animator>());
+        CreateAndOpenTable(prefabs.MoveBack());
     }
     public void ChangeWeeknum(int newWeeknum)
     {
         date = Classtable.getMondayDate(newWeeknum);
-        GameObject newTable = Instantiate(prefabs.MoveBack(), parentOfClasstable, false);
-        TableManager tableManager = newTable.AddComponent<TableManager>();
-        tableManager.Initialize(date, Classtable);
-        OpenPanel(newTable.GetComponent<Animator>());
+        CreateAndOpenTable(prefabs.MoveNext());
     }
 	public void CloseCurrent()
 	{
@@ -86,6 +81,16 @@ public class PanelManager : MonoBehaviour {
 		Open = null;
 
 	}
+    private void CreateAndOpenTable(GameObject prefab)
+    {
+        GameObject newTable = Instantiate(prefab, parentOfClasstable, false);
+        TableManager tableManager = newTable.AddComponent<TableManager>();
+        if (Classtable == null)
+            return;
+        tableManager.Initialize(date, Classtable);
+        OpenPanel(newTable.GetComponent<Animator>());
+        hasTable = true;
+    }
 	IEnumerator DisablePanelDeleyed(Animator anim)
 	{
 		bool closedStateReached = false;
