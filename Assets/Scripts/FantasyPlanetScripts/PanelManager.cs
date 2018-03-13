@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using Assets.Scripts.FantasyPlanetScripts;
 
 public class PanelManager : MonoBehaviour {
-    public GameObject blueDayWindow;
-    public GameObject greenDayWindow;
-    public GameObject redDayWindow;
+    public GameObject g_blueDayWindow;
+    public GameObject g_greenDayWindow;
+    public GameObject g_redDayWindow;
     public TextAsset htmlClasstable;
     public DateTime Date
     {
@@ -22,13 +22,14 @@ public class PanelManager : MonoBehaviour {
             ChangeDateTo(value);
         }
     }
+    public Dropdown d_Weeknum;
     private DateTime _date;
     private ClassTableob Classtable;
     private LoopChainTable<GameObject> prefabs;
-    public Animator initiallyOpen;
-    public Transform parentOfClasstable;
+    public Animator a_initiallyOpen;
+    public Transform t_parentOfClasstable;
 	private int OpenParameterId;
-	private Animator Open;
+	private Animator a_Open;
     private bool hasTable = false;
     private Queue<GameObject> ClasstablePool = new Queue<GameObject>();
 
@@ -36,18 +37,18 @@ public class PanelManager : MonoBehaviour {
 	const string ClosedStateName = "Closed";
     public void Start()
     {
-        _date = DateTime.Now;
-        prefabs = new LoopChainTable<GameObject>(blueDayWindow);
-        prefabs.Add(greenDayWindow);
-        prefabs.Add(redDayWindow);
         Classtable = new ClassTableob(htmlClasstable.text);
+        ChangeDateTo(DateTime.Now);
+        prefabs = new LoopChainTable<GameObject>(g_blueDayWindow);
+        prefabs.Add(g_greenDayWindow);
+        prefabs.Add(g_redDayWindow);
     }
     public void OnEnable()
     {
         OpenParameterId = Animator.StringToHash (OpenTransitionName);
-		if (initiallyOpen == null)
+		if (a_initiallyOpen == null)
 			return;
-        OpenPanel(initiallyOpen);
+        OpenPanel(a_initiallyOpen);
 	}
     public void Update()
     {
@@ -56,7 +57,7 @@ public class PanelManager : MonoBehaviour {
     }
     public void OpenPanel (Animator anim)
 	{
-		if (Open == anim)
+		if (a_Open == anim)
 			return;
 		anim.gameObject.SetActive(true);
 
@@ -64,8 +65,8 @@ public class PanelManager : MonoBehaviour {
 
 		CloseCurrent();
         
-		Open = anim;
-		Open.SetBool(OpenParameterId, true);
+		a_Open = anim;
+		a_Open.SetBool(OpenParameterId, true);
 	}
     public void NextDay()
     {
@@ -79,23 +80,33 @@ public class PanelManager : MonoBehaviour {
     }
     public void ChangeWeeknum(Dropdown dropdown)
     {
-        ChangeDateTo(Classtable.getMondayDate(dropdown.value));
-        CreateAndOpenTable(prefabs.MoveNext());
+        int newweeknum = dropdown.value + 1;
+        int oldweeknum = Classtable.getWeeknum(Date);
+        if (oldweeknum == newweeknum)
+        {
+            //其实这个不判断也没事，如果值没有被修改DropDown不会触发ChangeValue的事件，因此不会无限递归
+            return;
+        }
+        else
+        {
+            ChangeDateTo(Classtable.getMondayDate(newweeknum));
+            CreateAndOpenTable(prefabs.MoveNext());
+        }
     }
 	public void CloseCurrent()
 	{
-		if (Open == null)
+        if (a_Open == null || !a_Open.isActiveAndEnabled) 
 			return;
 
         EventSystem.current.SetSelectedGameObject(null);
-        Open.SetBool(OpenParameterId, false);
-		StartCoroutine(DisablePanelDeleyed(Open));
-		Open = null;
+        a_Open.SetBool(OpenParameterId, false);
+		StartCoroutine(DisablePanelDeleyed(a_Open));
+		a_Open = null;
 
 	}
     private void CreateAndOpenTable(GameObject prefab)
     {
-        GameObject newTable = Instantiate(prefab, parentOfClasstable, false);
+        GameObject newTable = Instantiate(prefab, t_parentOfClasstable, false);
         ClasstablePool.Enqueue(newTable);
         CleanUpClasstablePool();
         TableManager tableManager = newTable.AddComponent<TableManager>();
@@ -105,7 +116,7 @@ public class PanelManager : MonoBehaviour {
         OpenPanel(newTable.GetComponent<Animator>());
         hasTable = true;
     }
-    //销毁多余课程表
+    //销毁多余课程表,当且仅当ClasstablePool里有三个以上预制体对象时执行延迟销毁
     private void CleanUpClasstablePool()
     {
         if (ClasstablePool.Count > 3)
@@ -117,7 +128,14 @@ public class PanelManager : MonoBehaviour {
     }
     private void ChangeDateTo(DateTime newDate)
     {
+        int oldWeeknum = Classtable.getWeeknum(_date);
         _date = newDate;
+        int newWeeknum = Classtable.getWeeknum(newDate);
+        if (oldWeeknum != newWeeknum)
+        {
+            d_Weeknum.value = Math.Min(20, newWeeknum) - 1;
+            d_Weeknum.value = Math.Max(1, newWeeknum) - 1;
+        }
     }
     IEnumerator DisablePanelDeleyed(Animator anim)
     {

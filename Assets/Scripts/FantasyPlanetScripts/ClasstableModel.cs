@@ -138,7 +138,7 @@ namespace Assets.Scripts.FantasyPlanetScripts
         public List<List<Classob>> GetThisWeekClassTable(DateTime today)
         {
             List<List<Classob>> result = new List<List<Classob>>();
-            int weeknum = getweeknum(today);
+            int weeknum = getWeeknum(today);
             for (int i = 0; i < ClassTable.Count; i++)
             {
                 List<Classob> thisday = new List<Classob>();
@@ -152,19 +152,19 @@ namespace Assets.Scripts.FantasyPlanetScripts
             }
             return result;
         }
-        private int getweeknum(DateTime today)
+        public int getWeeknum(DateTime today)
         {
             int days = (today - this.TermBegin).Days;
             return days / 7 + 1;
         }
-        public DateTime getMondayDate(int weeknum = 0)
+        public DateTime getMondayDate(int weeknum = 1)
         {
-            if (weeknum == 0)
+            if (weeknum == 1)
                 return TermBegin;
             else
             {
-                DateTime result = TermBegin.AddDays(weeknum * 7);
-                while ((int)result.DayOfWeek == 1)
+                DateTime result = TermBegin.AddDays((weeknum - 1) * 7);
+                while ((int)result.DayOfWeek != 1)
                 {
                     result = result.AddDays(-1);
                 }
@@ -179,7 +179,7 @@ namespace Assets.Scripts.FantasyPlanetScripts
         {
             List<Classob> result = new List<Classob>();
             int weekcode = getweekcode(today);
-            int weeknum = getweeknum(today);
+            int weeknum = getWeeknum(today);
             foreach (Classob clas in ClassTable[weekcode])
             {
                 if (clas.isToday(weeknum))
