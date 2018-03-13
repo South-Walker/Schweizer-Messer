@@ -30,7 +30,6 @@ public class TableManager : MonoBehaviour {
         this.classToday = classtable.GetClassToday(date);
         catchElement();
         fillClassTable();
-        Debug.Log("1");
     }
     private void catchElement()
     {

@@ -11,7 +11,18 @@ public class PanelManager : MonoBehaviour {
     public GameObject greenDayWindow;
     public GameObject redDayWindow;
     public TextAsset htmlClasstable;
-    private DateTime date;
+    public DateTime Date
+    {
+        get
+        {
+            return _date;
+        }
+        set
+        {
+            ChangeDateTo(value);
+        }
+    }
+    private DateTime _date;
     private ClassTableob Classtable;
     private LoopChainTable<GameObject> prefabs;
     public Animator initiallyOpen;
@@ -19,12 +30,13 @@ public class PanelManager : MonoBehaviour {
 	private int OpenParameterId;
 	private Animator Open;
     private bool hasTable = false;
+    private Queue<GameObject> ClasstablePool = new Queue<GameObject>();
 
-	const string k_OpenTransitionName = "Open";
-	const string k_ClosedStateName = "Closed";
+	const string OpenTransitionName = "Open";
+	const string ClosedStateName = "Closed";
     public void Start()
     {
-        date = DateTime.Now;
+        _date = DateTime.Now;
         prefabs = new LoopChainTable<GameObject>(blueDayWindow);
         prefabs.Add(greenDayWindow);
         prefabs.Add(redDayWindow);
@@ -32,7 +44,7 @@ public class PanelManager : MonoBehaviour {
     }
     public void OnEnable()
     {
-        OpenParameterId = Animator.StringToHash (k_OpenTransitionName);
+        OpenParameterId = Animator.StringToHash (OpenTransitionName);
 		if (initiallyOpen == null)
 			return;
         OpenPanel(initiallyOpen);
@@ -57,17 +69,17 @@ public class PanelManager : MonoBehaviour {
 	}
     public void NextDay()
     {
-        date = date.AddDays(1);
+        ChangeDateTo(_date.AddDays(1));
         CreateAndOpenTable(prefabs.MoveNext());
     }
     public void YesterDay()
     {
-        date = date.AddDays(-1);
+        ChangeDateTo(_date.AddDays(-1));
         CreateAndOpenTable(prefabs.MoveBack());
     }
-    public void ChangeWeeknum(int newWeeknum)
+    public void ChangeWeeknum(Dropdown dropdown)
     {
-        date = Classtable.getMondayDate(newWeeknum);
+        ChangeDateTo(Classtable.getMondayDate(dropdown.value));
         CreateAndOpenTable(prefabs.MoveNext());
     }
 	public void CloseCurrent()
@@ -84,28 +96,56 @@ public class PanelManager : MonoBehaviour {
     private void CreateAndOpenTable(GameObject prefab)
     {
         GameObject newTable = Instantiate(prefab, parentOfClasstable, false);
+        ClasstablePool.Enqueue(newTable);
+        CleanUpClasstablePool();
         TableManager tableManager = newTable.AddComponent<TableManager>();
         if (Classtable == null)
             return;
-        tableManager.Initialize(date, Classtable);
+        tableManager.Initialize(_date, Classtable);
         OpenPanel(newTable.GetComponent<Animator>());
         hasTable = true;
     }
-	IEnumerator DisablePanelDeleyed(Animator anim)
-	{
-		bool closedStateReached = false;
-		bool wantToClose = true;
-		while (!closedStateReached && wantToClose)
-		{
-			if (!anim.IsInTransition(0))
-				closedStateReached = anim.GetCurrentAnimatorStateInfo(0).IsName(k_ClosedStateName);
+    //销毁多余课程表
+    private void CleanUpClasstablePool()
+    {
+        if (ClasstablePool.Count > 3)
+        {
+            GameObject classtable = ClasstablePool.Dequeue();
+            Animator anim = classtable.GetComponent<Animator>();
+            StartCoroutine(CleanUpClasstableDeleyed(classtable, anim));
+        }
+    }
+    private void ChangeDateTo(DateTime newDate)
+    {
+        _date = newDate;
+    }
+    IEnumerator DisablePanelDeleyed(Animator anim)
+    {
+        bool closedStateReached = false;
+        bool wantToClose = true;
+        while (!closedStateReached && wantToClose)
+        {
+            if (!anim.IsInTransition(0))
+                closedStateReached = anim.GetCurrentAnimatorStateInfo(0).IsName(ClosedStateName);
 
-			wantToClose = !anim.GetBool(OpenParameterId);
+            wantToClose = !anim.GetBool(OpenParameterId);
 
-			yield return new WaitForEndOfFrame();
-		}
+            yield return new WaitForEndOfFrame();
+        }
 
-		if (wantToClose)
-			anim.gameObject.SetActive(false);
-	}
+        if (wantToClose)
+            anim.gameObject.SetActive(false);
+    }
+    IEnumerator CleanUpClasstableDeleyed(GameObject waitingToClear, Animator anim)
+    {
+        bool closedStateReached = false;
+        bool isAcrive = waitingToClear.activeSelf;
+        while (!closedStateReached && isAcrive) 
+        {
+            if (!anim.IsInTransition(0))
+                closedStateReached = anim.GetCurrentAnimatorStateInfo(0).IsName(ClosedStateName);
+            yield return new WaitForEndOfFrame();
+        }
+        Destroy(waitingToClear);
+    }
 }
