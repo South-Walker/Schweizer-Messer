@@ -7,10 +7,6 @@ using System.Collections.Generic;
 using Assets.Scripts.FantasyPlanetScripts;
 
 public class PanelManager : MonoBehaviour {
-    public GameObject g_blueDayWindow;
-    public GameObject g_greenDayWindow;
-    public GameObject g_redDayWindow;
-    public TextAsset htmlClasstable;
     public DateTime Date
     {
         get
@@ -28,20 +24,27 @@ public class PanelManager : MonoBehaviour {
     private LoopChainTable<GameObject> prefabs;
     public Animator a_initiallyOpen;
     public Transform t_parentOfClasstable;
-	private int OpenParameterId;
-	private Animator a_Open;
+    private int OpenParameterId;
+    private Animator a_Open;
     private bool hasTable = false;
     private Queue<GameObject> ClasstablePool = new Queue<GameObject>();
 
-	const string OpenTransitionName = "Open";
-	const string ClosedStateName = "Closed";
+    const string OpenTransitionName = "Open";
+    const string ClosedStateName = "Closed";
     public void Start()
     {
+        var htmlClasstable = Resources.Load<TextAsset>("Data/Newclasstable");
+        var g_blueDayWindow = Resources.Load<GameObject>("Prefabs/BlueDayMenu");
+        var g_greenDayWindow = Resources.Load<GameObject>("Prefabs/GreenDayMenu");
+        var g_redDayWindow = Resources.Load<GameObject>("Prefabs/RedDayMenu");
         Classtable = new ClassTableob(htmlClasstable.text);
         ChangeDateTo(DateTime.Now);
         prefabs = new LoopChainTable<GameObject>(g_blueDayWindow);
         prefabs.Add(g_greenDayWindow);
         prefabs.Add(g_redDayWindow);
+    }
+    private void Awake()
+    {
     }
     public void OnEnable()
     {

@@ -7,8 +7,10 @@ using UnityScript;
 using Assets.Scripts.FantasyPlanetScripts;
 
 public class TableManager : MonoBehaviour {
+    private GameObject g_detailedWindowCurrent;
     private DateTime date;
     private List<Classob> classToday;
+    private Transform t_Window;
     private Transform t_Title;
     private Transform t_Table;
     private Button b_Close;
@@ -16,37 +18,55 @@ public class TableManager : MonoBehaviour {
     private string[] Weekdays = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
     List<Transform> timePeriod = new List<Transform>();
     List<Transform> Times = new List<Transform>();
-
     const string OpenTransitionName = "Open";
     const string ClosedStateName = "Closed";
     // Use this for initialization
     void Start () {
-	}
+    }
     private void OnEnable()
     {
     }
     // Update is called once per frame
-    void Update () {
-		
-	}
+    void Update()
+    {
+    }
     public void Initialize(DateTime date, ClassTableob classtable)
     {
         this.date = date;
         this.classToday = classtable.GetClassToday(date);
+        
+
         catchElement();
-        fillClassTable();
-    }
-    private void catchElement()
-    {
-        var Window = transform.Find("Window");
-        this.t_Title = Window.Find("Title");
-        this.t_Table = Window.Find("Table");
-        this.b_Close = Window.Find("Close").GetComponent<Button>();
-        a_Open = GetComponent<Animator>();
+        this.b_Close = t_Window.Find("Close").GetComponent<Button>();
         b_Close.onClick.AddListener(() =>
         {
             CloseCurrent();
         });
+        fillClassTable();
+    }
+    private void CreatDetailedWindow(Classob nowClass)
+    {
+        if (g_detailedWindowCurrent != null)
+        {
+            CloseCurrentDetailedWindow();
+        }
+        g_detailedWindowCurrent = Instantiate(Resources.Load<GameObject>("Prefabs/DetailedWindow"), transform, false);
+        Transform t_detailedWindowCurrent = g_detailedWindowCurrent.transform;
+        t_detailedWindowCurrent.Find("ClassName").GetComponent<Text>().text += nowClass.classname;
+        t_detailedWindowCurrent.Find("Teacher").GetComponent<Text>().text += nowClass.teacher;
+        t_detailedWindowCurrent.Find("Classroom").GetComponent<Text>().text += nowClass.room;
+        t_detailedWindowCurrent.Find("Time").GetComponent<Text>().text += nowClass.alldate;
+        t_detailedWindowCurrent.Find("Close").GetComponent<Button>().onClick.AddListener(()=>
+        {
+            CloseCurrentDetailedWindow();
+        });
+    }
+    private void catchElement()
+    {
+        t_Window = transform.Find("Window");
+        this.t_Title = t_Window.Find("Title");
+        this.t_Table = t_Window.Find("Table");
+        a_Open = GetComponent<Animator>();
 
         timePeriod.Add(t_Table.Find("Morning"));
         timePeriod.Add(t_Table.Find("Afternoon"));
@@ -66,9 +86,14 @@ public class TableManager : MonoBehaviour {
             int beginPoint = classob.timebegin / 2;
             int endPoint = (classob.timeend - classob.timebegin + 1) / 2;
             var position = Times.GetRange(beginPoint, endPoint);
-            foreach (var button in position)
+            foreach (var item in position)
             {
-                button.Find("Text").GetComponent<Text>().text = classob.classname;
+                var button = item.GetComponent<Button>();
+                button.onClick.AddListener(() =>
+                {
+                    CreatDetailedWindow(classob);
+                });
+                item.Find("Text").GetComponent<Text>().text = classob.classname;
             }
         }
     }
@@ -81,6 +106,11 @@ public class TableManager : MonoBehaviour {
         StartCoroutine(DisablePanelDeleyed(a_Open));
         a_Open = null;
 
+    }
+    private void CloseCurrentDetailedWindow()
+    {
+        Destroy(g_detailedWindowCurrent);
+        g_detailedWindowCurrent = null;
     }
     IEnumerator DisablePanelDeleyed(Animator anim)
     {

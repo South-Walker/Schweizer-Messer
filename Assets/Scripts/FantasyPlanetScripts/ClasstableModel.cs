@@ -103,7 +103,7 @@ namespace Assets.Scripts.FantasyPlanetScripts
                     regex = new Regex("<td[^>]*>(?<class>[^<]*)</td><td[^>]*>\\d+</td><td[^>]*>(?<teacher>[^<]*)</td><td[^>]*>(?<date>[^<]*)</td><td [^>]*>(?<room>[^<]*)</td><td[^>]*>[^<]*</td><td[^>]*>[^<]*</td><td[^>]*>[^<]*</td></tr>");
                     m = regex.Match(now);
                     GroupCollection gc = m.Groups;
-                    teacher = gc["teach"].Value;
+                    teacher = gc["teacher"].Value;
                     classname = gc["class"].Value;
                     date = gc["date"].Value;
                     room = gc["room"].Value;
@@ -190,6 +190,7 @@ namespace Assets.Scripts.FantasyPlanetScripts
     }
     public class Classob
     {
+        public string alldate;
         public string teacher;
         public string classname;
         public int timebegin;
@@ -205,6 +206,7 @@ namespace Assets.Scripts.FantasyPlanetScripts
         public Color colorintable;
         public Classob(string thisteacher, string thisclassname, string thisdate, string thisroom, Color thiscolor)
         {
+            alldate = thisdate;
             colorintable = thiscolor;
             isdan = true; isshuang = true;
             teacher = thisteacher;
