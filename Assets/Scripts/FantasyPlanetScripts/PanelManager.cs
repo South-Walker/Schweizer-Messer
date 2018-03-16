@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using Assets.Scripts.FantasyPlanetScripts;
 
 public class PanelManager : MonoBehaviour {
+    public Dropdown d_Weeknum;
+    public Transform t_parentOfClasstable;
     public DateTime Date
     {
         get
@@ -18,59 +20,49 @@ public class PanelManager : MonoBehaviour {
             ChangeDateTo(value);
         }
     }
-    public Dropdown d_Weeknum;
     private DateTime _date;
+
     private ClassTableob Classtable;
     private LoopChainTable<GameObject> prefabs;
-    public Animator a_initiallyOpen;
-    public Transform t_parentOfClasstable;
-    private int OpenParameterId;
+    private Animator a_initiallyOpen;
     private Animator a_Open;
-    private bool hasTable = false;
+    private bool isProducable = true;
     private Queue<GameObject> ClasstablePool = new Queue<GameObject>();
 
     const string OpenTransitionName = "Open";
     const string ClosedStateName = "Closed";
+
     public void Start()
+    {
+        ChangeDateTo(DateTime.Now);
+    }
+    private void Awake()
+    {
+        initializeParameter();
+        ChangeDateTo(DateTime.Now);
+    }
+    private void initializeParameter()
     {
         var htmlClasstable = Resources.Load<TextAsset>("Data/Newclasstable");
         var g_blueDayWindow = Resources.Load<GameObject>("Prefabs/BlueDayMenu");
         var g_greenDayWindow = Resources.Load<GameObject>("Prefabs/GreenDayMenu");
         var g_redDayWindow = Resources.Load<GameObject>("Prefabs/RedDayMenu");
         Classtable = new ClassTableob(htmlClasstable.text);
-        ChangeDateTo(DateTime.Now);
         prefabs = new LoopChainTable<GameObject>(g_blueDayWindow);
         prefabs.Add(g_greenDayWindow);
         prefabs.Add(g_redDayWindow);
     }
-    private void Awake()
-    {
-    }
     public void OnEnable()
     {
-        OpenParameterId = Animator.StringToHash (OpenTransitionName);
-		if (a_initiallyOpen == null)
-			return;
-        OpenPanel(a_initiallyOpen);
-	}
+        ChangeDateTo(DateTime.Now);
+        isProducable = true;
+    }
     public void Update()
     {
-        if (!hasTable)
+        if (isProducable)
             CreateAndOpenTable(prefabs.MoveNext());
     }
-    public void OpenPanel (Animator anim)
-	{
-		if (a_Open == anim)
-			return;
-		anim.gameObject.SetActive(true);
-
-		anim.transform.SetAsLastSibling();
-
-		CloseCurrent();
-        
-		a_Open = anim;
-		a_Open.SetBool(OpenParameterId, true);
-	}
+    #region Event
     public void NextDay()
     {
         ChangeDateTo(_date.AddDays(1));
@@ -96,28 +88,40 @@ public class PanelManager : MonoBehaviour {
             CreateAndOpenTable(prefabs.MoveNext());
         }
     }
-	public void CloseCurrent()
-	{
-        if (a_Open == null || !a_Open.isActiveAndEnabled) 
-			return;
-
-        EventSystem.current.SetSelectedGameObject(null);
-        a_Open.SetBool(OpenParameterId, false);
-		StartCoroutine(DisablePanelDeleyed(a_Open));
-		a_Open = null;
-
-	}
+    public void Close()
+    {
+        CloseCurrentTable();
+        ChangeDateTo(DateTime.Now);
+    }
+    #endregion
     private void CreateAndOpenTable(GameObject prefab)
     {
         GameObject newTable = Instantiate(prefab, t_parentOfClasstable, false);
+        TableManager tableManager = newTable.AddComponent<TableManager>();
+        tableManager.Initialize(_date, Classtable);
+        OpenTable(newTable.GetComponent<Animator>());
         ClasstablePool.Enqueue(newTable);
         CleanUpClasstablePool();
-        TableManager tableManager = newTable.AddComponent<TableManager>();
-        if (Classtable == null)
+        isProducable = false;
+    }
+    private void OpenTable(Animator newAnim)
+    {
+        if (a_Open == newAnim)
             return;
-        tableManager.Initialize(_date, Classtable);
-        OpenPanel(newTable.GetComponent<Animator>());
-        hasTable = true;
+        newAnim.transform.SetAsLastSibling();
+
+        CloseCurrentTable();
+
+        a_Open = newAnim;
+        a_Open.SetBool(OpenTransitionName, true);
+    }
+    private void CloseCurrentTable()
+    {
+        if (a_Open == null || !a_Open.isActiveAndEnabled)
+            return;
+        a_Open.SetBool(OpenTransitionName, false);
+        StartCoroutine(DisablePanelDeleyed(a_Open));
+        a_Open = null;
     }
     //销毁多余课程表,当且仅当ClasstablePool里有三个以上预制体对象时执行延迟销毁
     private void CleanUpClasstablePool()
@@ -149,7 +153,7 @@ public class PanelManager : MonoBehaviour {
             if (!anim.IsInTransition(0))
                 closedStateReached = anim.GetCurrentAnimatorStateInfo(0).IsName(ClosedStateName);
 
-            wantToClose = !anim.GetBool(OpenParameterId);
+            wantToClose = !anim.GetBool(OpenTransitionName);
 
             yield return new WaitForEndOfFrame();
         }
