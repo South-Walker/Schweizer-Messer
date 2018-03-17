@@ -26,25 +26,23 @@ public class TableManager : MonoBehaviour {
     private void OnEnable()
     {
     }
-    // Update is called once per frame
-    void Update()
+    #region Event
+    public void CloseCurrent()
     {
-    }
-    public void Initialize(DateTime date, ClassTableob classtable)
-    {
-        this.date = date;
-        this.classToday = classtable.GetClassToday(date);
-        
+        if (a_Open == null || !a_Open.isActiveAndEnabled)
+            return;
 
-        catchElement();
-        this.b_Close = t_Window.Find("Close").GetComponent<Button>();
-        b_Close.onClick.AddListener(() =>
-        {
-            CloseCurrent();
-        });
-        fillClassTable();
+        a_Open.SetBool(OpenTransitionName, false);
+        StartCoroutine(DisablePanelDeleyed(a_Open));
+        a_Open = null;
+
     }
-    private void CreatDetailedWindow(Classob nowClass)
+    public void CloseCurrentDetailedWindow()
+    {
+        Destroy(g_detailedWindowCurrent);
+        g_detailedWindowCurrent = null;
+    }
+    public void CreatDetailedWindow(Classob nowClass)
     {
         if (g_detailedWindowCurrent != null)
         {
@@ -56,10 +54,25 @@ public class TableManager : MonoBehaviour {
         t_detailedWindowCurrent.Find("Teacher").GetComponent<Text>().text += nowClass.teacher;
         t_detailedWindowCurrent.Find("Classroom").GetComponent<Text>().text += nowClass.room;
         t_detailedWindowCurrent.Find("Time").GetComponent<Text>().text += nowClass.alldate;
-        t_detailedWindowCurrent.Find("Close").GetComponent<Button>().onClick.AddListener(()=>
+        t_detailedWindowCurrent.Find("Close").GetComponent<Button>().onClick.AddListener(() =>
         {
             CloseCurrentDetailedWindow();
         });
+    }
+    #endregion
+    public void Initialize(DateTime date, ClassTableob classtable)
+    {
+        this.date = date;
+        this.classToday = classtable.GetClassToday(date);
+        
+        catchElement();
+
+        this.b_Close = t_Window.Find("Close").GetComponent<Button>();
+        b_Close.onClick.AddListener(() =>
+        {
+            CloseCurrent();
+        });
+        fillClassTable();
     }
     private void catchElement()
     {
@@ -96,21 +109,6 @@ public class TableManager : MonoBehaviour {
                 item.Find("Text").GetComponent<Text>().text = classob.classname;
             }
         }
-    }
-    public void CloseCurrent()
-    {
-        if (a_Open == null || !a_Open.isActiveAndEnabled)
-            return;
-
-        a_Open.SetBool(OpenTransitionName, false);
-        StartCoroutine(DisablePanelDeleyed(a_Open));
-        a_Open = null;
-
-    }
-    private void CloseCurrentDetailedWindow()
-    {
-        Destroy(g_detailedWindowCurrent);
-        g_detailedWindowCurrent = null;
     }
     IEnumerator DisablePanelDeleyed(Animator anim)
     {

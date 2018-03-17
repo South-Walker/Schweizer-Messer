@@ -24,22 +24,15 @@ public class PanelManager : MonoBehaviour {
 
     private ClassTableob Classtable;
     private LoopChainTable<GameObject> prefabs;
-    private Animator a_initiallyOpen;
     private Animator a_Open;
-    private bool isProducable = true;
     private Queue<GameObject> ClasstablePool = new Queue<GameObject>();
 
     const string OpenTransitionName = "Open";
     const string ClosedStateName = "Closed";
-
-    public void Start()
-    {
-        ChangeDateTo(DateTime.Now);
-    }
+    
     private void Awake()
     {
         initializeParameter();
-        ChangeDateTo(DateTime.Now);
     }
     private void initializeParameter()
     {
@@ -55,12 +48,7 @@ public class PanelManager : MonoBehaviour {
     public void OnEnable()
     {
         ChangeDateTo(DateTime.Now);
-        isProducable = true;
-    }
-    public void Update()
-    {
-        if (isProducable)
-            CreateAndOpenTable(prefabs.MoveNext());
+        CreateAndOpenTable(prefabs.MoveNext());
     }
     #region Event
     public void NextDay()
@@ -88,39 +76,36 @@ public class PanelManager : MonoBehaviour {
             CreateAndOpenTable(prefabs.MoveNext());
         }
     }
+    //只负责收拾下属的table对象，本身的Close由上层Menu负责
     public void Close()
     {
-        CloseCurrentTable();
-        ChangeDateTo(DateTime.Now);
+        DisableCurrentTable();
     }
     #endregion
     private void CreateAndOpenTable(GameObject prefab)
     {
+        //create
         GameObject newTable = Instantiate(prefab, t_parentOfClasstable, false);
         TableManager tableManager = newTable.AddComponent<TableManager>();
         tableManager.Initialize(_date, Classtable);
-        OpenTable(newTable.GetComponent<Animator>());
-        ClasstablePool.Enqueue(newTable);
-        CleanUpClasstablePool();
-        isProducable = false;
-    }
-    private void OpenTable(Animator newAnim)
-    {
+        //open
+        Animator newAnim = newTable.GetComponent<Animator>();
         if (a_Open == newAnim)
             return;
         newAnim.transform.SetAsLastSibling();
-
-        CloseCurrentTable();
-
+        DisableCurrentTable();
         a_Open = newAnim;
         a_Open.SetBool(OpenTransitionName, true);
+        //clean up
+        ClasstablePool.Enqueue(newTable);
+        CleanUpClasstablePool();
     }
-    private void CloseCurrentTable()
+    private void DisableCurrentTable()
     {
         if (a_Open == null || !a_Open.isActiveAndEnabled)
             return;
         a_Open.SetBool(OpenTransitionName, false);
-        StartCoroutine(DisablePanelDeleyed(a_Open));
+        StartCoroutine(DisableClasstableDeleyed(a_Open));
         a_Open = null;
     }
     //销毁多余课程表,当且仅当ClasstablePool里有三个以上预制体对象时执行延迟销毁
@@ -144,7 +129,7 @@ public class PanelManager : MonoBehaviour {
             d_Weeknum.value = Math.Max(1, newWeeknum) - 1;
         }
     }
-    IEnumerator DisablePanelDeleyed(Animator anim)
+    IEnumerator DisableClasstableDeleyed(Animator anim)
     {
         bool closedStateReached = false;
         bool wantToClose = true;
@@ -164,8 +149,8 @@ public class PanelManager : MonoBehaviour {
     IEnumerator CleanUpClasstableDeleyed(GameObject waitingToClear, Animator anim)
     {
         bool closedStateReached = false;
-        bool isAcrive = waitingToClear.activeSelf;
-        while (!closedStateReached && isAcrive) 
+        bool isActive = waitingToClear.activeSelf;
+        while (!closedStateReached && isActive) 
         {
             if (!anim.IsInTransition(0))
                 closedStateReached = anim.GetCurrentAnimatorStateInfo(0).IsName(ClosedStateName);
