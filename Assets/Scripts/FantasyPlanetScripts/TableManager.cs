@@ -7,9 +7,10 @@ using UnityScript;
 using Assets.Scripts.FantasyPlanetScripts;
 
 public class TableManager : MonoBehaviour {
-    private GameObject g_detailedWindowCurrent;
     private DateTime date;
     private List<Classob> classToday;
+    private Animator a_DetailedTableCurrent;
+    private Transform t_DetailedWindow;
     private Transform t_Window;
     private Transform t_Title;
     private Transform t_Table;
@@ -39,25 +40,19 @@ public class TableManager : MonoBehaviour {
     }
     public void CloseCurrentDetailedWindow()
     {
-        Destroy(g_detailedWindowCurrent);
-        g_detailedWindowCurrent = null;
+        a_DetailedTableCurrent.SetBool(OpenTransitionName, false);
     }
-    public void CreatDetailedWindow(Classob nowClass)
+    public void FillDetailedWindow(Classob nowClass)
     {
-        if (g_detailedWindowCurrent != null)
-        {
-            CloseCurrentDetailedWindow();
-        }
-        g_detailedWindowCurrent = Instantiate(Resources.Load<GameObject>("Prefabs/DetailedWindow"), transform, false);
-        Transform t_detailedWindowCurrent = g_detailedWindowCurrent.transform;
-        t_detailedWindowCurrent.Find("ClassName").GetComponent<Text>().text += nowClass.classname;
-        t_detailedWindowCurrent.Find("Teacher").GetComponent<Text>().text += nowClass.teacher;
-        t_detailedWindowCurrent.Find("Classroom").GetComponent<Text>().text += nowClass.room;
-        t_detailedWindowCurrent.Find("Time").GetComponent<Text>().text += nowClass.alldate;
-        t_detailedWindowCurrent.Find("Close").GetComponent<Button>().onClick.AddListener(() =>
+        t_DetailedWindow.Find("ClassName").GetComponent<Text>().text = nowClass.classname;
+        t_DetailedWindow.Find("Teacher").GetComponent<Text>().text = "教师：" + nowClass.teacher;
+        t_DetailedWindow.Find("Classroom").GetComponent<Text>().text = "教室：" + nowClass.room;
+        t_DetailedWindow.Find("Time").GetComponent<Text>().text = "时间：" + nowClass.alldate;
+        t_DetailedWindow.Find("Close").GetComponent<Button>().onClick.AddListener(() =>
         {
             CloseCurrentDetailedWindow();
         });
+        a_DetailedTableCurrent.SetBool(OpenTransitionName, true);
     }
     #endregion
     public void Initialize(DateTime date, ClassTableob classtable)
@@ -77,8 +72,10 @@ public class TableManager : MonoBehaviour {
     private void catchElement()
     {
         t_Window = transform.Find("Window");
+        this.t_DetailedWindow = t_Window.Find("DetailedWindow");
         this.t_Title = t_Window.Find("Title");
         this.t_Table = t_Window.Find("Table");
+        this.a_DetailedTableCurrent = t_Window.GetComponent<Animator>();
         a_Open = GetComponent<Animator>();
 
         timePeriod.Add(t_Table.Find("Morning"));
@@ -104,7 +101,7 @@ public class TableManager : MonoBehaviour {
                 var button = item.GetComponent<Button>();
                 button.onClick.AddListener(() =>
                 {
-                    CreatDetailedWindow(classob);
+                    FillDetailedWindow(classob);
                 });
                 item.Find("Text").GetComponent<Text>().text = classob.classname;
             }
