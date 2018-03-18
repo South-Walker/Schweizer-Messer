@@ -7,15 +7,15 @@ using UnityScript;
 using Assets.Scripts.FantasyPlanetScripts;
 
 public class TableManager : MonoBehaviour {
+    private bool hasDetailedWindow = false;
     private DateTime date;
     private List<Classob> classToday;
-    private Animator a_DetailedTableCurrent;
+    private Animator a_DetailedTable;
     private Transform t_DetailedWindow;
     private Transform t_Window;
     private Transform t_Title;
     private Transform t_Table;
     private Button b_Close;
-    private Animator a_Open;
     private string[] Weekdays = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
     List<Transform> timePeriod = new List<Transform>();
     List<Transform> Times = new List<Transform>();
@@ -28,31 +28,20 @@ public class TableManager : MonoBehaviour {
     {
     }
     #region Event
-    public void CloseCurrent()
+    public void CloseTableCurrent()
     {
-        if (a_Open == null || !a_Open.isActiveAndEnabled)
+        Animator a_open = GetComponent<Animator>();
+        if (a_open == null || !a_open.isActiveAndEnabled)
             return;
 
-        a_Open.SetBool(OpenTransitionName, false);
-        StartCoroutine(DisablePanelDeleyed(a_Open));
-        a_Open = null;
+        a_open.SetBool(OpenTransitionName, false);
+        StartCoroutine(DisableTableDeleyed(a_open));
+        a_open = null;
 
     }
-    public void CloseCurrentDetailedWindow()
+    public void CloseDetailedWindow()
     {
-        a_DetailedTableCurrent.SetBool(OpenTransitionName, false);
-    }
-    public void FillDetailedWindow(Classob nowClass)
-    {
-        t_DetailedWindow.Find("ClassName").GetComponent<Text>().text = nowClass.classname;
-        t_DetailedWindow.Find("Teacher").GetComponent<Text>().text = "教师：" + nowClass.teacher;
-        t_DetailedWindow.Find("Classroom").GetComponent<Text>().text = "教室：" + nowClass.room;
-        t_DetailedWindow.Find("Time").GetComponent<Text>().text = "时间：" + nowClass.alldate;
-        t_DetailedWindow.Find("Close").GetComponent<Button>().onClick.AddListener(() =>
-        {
-            CloseCurrentDetailedWindow();
-        });
-        a_DetailedTableCurrent.SetBool(OpenTransitionName, true);
+        StartCoroutine(HidenDetailedWindow());
     }
     #endregion
     public void Initialize(DateTime date, ClassTableob classtable)
@@ -65,7 +54,7 @@ public class TableManager : MonoBehaviour {
         this.b_Close = t_Window.Find("Close").GetComponent<Button>();
         b_Close.onClick.AddListener(() =>
         {
-            CloseCurrent();
+            CloseTableCurrent();
         });
         fillClassTable();
     }
@@ -75,8 +64,7 @@ public class TableManager : MonoBehaviour {
         this.t_DetailedWindow = t_Window.Find("DetailedWindow");
         this.t_Title = t_Window.Find("Title");
         this.t_Table = t_Window.Find("Table");
-        this.a_DetailedTableCurrent = t_Window.GetComponent<Animator>();
-        a_Open = GetComponent<Animator>();
+        this.a_DetailedTable = t_Window.GetComponent<Animator>();
 
         timePeriod.Add(t_Table.Find("Morning"));
         timePeriod.Add(t_Table.Find("Afternoon"));
@@ -101,20 +89,18 @@ public class TableManager : MonoBehaviour {
                 var button = item.GetComponent<Button>();
                 button.onClick.AddListener(() =>
                 {
-                    FillDetailedWindow(classob);
+                    StartCoroutine(ShowDetailedWindow(classob));
                 });
                 item.Find("Text").GetComponent<Text>().text = classob.classname;
             }
         }
     }
-    IEnumerator DisablePanelDeleyed(Animator anim)
+    IEnumerator DisableTableDeleyed(Animator anim)
     {
         bool closedStateReached = false;
         bool wantToClose = true;
         while (!closedStateReached && wantToClose)
         {
-            if (!anim.IsInTransition(0))
-                closedStateReached = anim.GetCurrentAnimatorStateInfo(0).IsName(ClosedStateName);
 
             wantToClose = !anim.GetBool(OpenTransitionName);
 
@@ -123,5 +109,37 @@ public class TableManager : MonoBehaviour {
 
         if (wantToClose)
             anim.gameObject.SetActive(false);
+    }
+    IEnumerator HidenDetailedWindow()
+    {
+        bool isOpening = true;
+        a_DetailedTable.SetBool(OpenTransitionName, false);
+        while (isOpening) 
+        {
+            isOpening = a_DetailedTable.IsInTransition(0);
+            yield return new WaitForEndOfFrame();
+        }
+        hasDetailedWindow = false;
+    }
+    IEnumerator ShowDetailedWindow(Classob classob)
+    {
+        while (hasDetailedWindow)
+        {
+            yield return HidenDetailedWindow();
+        }
+        FillDetailedWindow(classob);
+        a_DetailedTable.SetBool(OpenTransitionName, true);
+        hasDetailedWindow = true;
+    }
+    public void FillDetailedWindow(Classob nowClass)
+    {
+        t_DetailedWindow.Find("ClassName").GetComponent<Text>().text = nowClass.classname;
+        t_DetailedWindow.Find("Teacher").GetComponent<Text>().text = "教师：" + nowClass.teacher;
+        t_DetailedWindow.Find("Classroom").GetComponent<Text>().text = "教室：" + nowClass.room;
+        t_DetailedWindow.Find("Time").GetComponent<Text>().text = "时间：" + nowClass.alldate;
+        t_DetailedWindow.Find("Close").GetComponent<Button>().onClick.AddListener(() =>
+        {
+            CloseDetailedWindow();
+        });
     }
 }
