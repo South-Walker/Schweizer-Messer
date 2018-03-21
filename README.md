@@ -317,3 +317,7 @@ unity学习笔记
 #### 2018-3-20
 
 >* Input.acceleration：acceleration这个词在物理里是加速度的意思，在unity里用来获取手机感受到的重力方向
+
+#### 2018-3-21
+
+>* Audio Listener与Audio Source：Audio Source是音源，Audio Listener是音频侦听器，场景内可以有多个音源，但是原则上只能有一个音频侦听器
