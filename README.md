@@ -321,3 +321,16 @@ unity学习笔记
 #### 2018-3-21
 
 >* Audio Listener与Audio Source：Audio Source是音源，Audio Listener是音频侦听器，场景内可以有多个音源，但是原则上只能有一个音频侦听器
+
+#### 2018-3-22
+
+>* OnTriggerEnter(Collider other):碰撞两方存在刚体和isTigger属性时，可以捕捉碰撞other值是挂载脚本者外的一方
+>* OnMouseDown():挂载在物体上，在PC端，这个事件会在鼠标点击挂载物体后触发，在移动端则是手指按上挂载物体后。
+>* Camera.main返回第一个标签为MainCamera的摄像机，也就是正起作用的摄像机
+
+#### 2018-3-24
+
+>* .physicmaterial:物理材质文件，本身是个文本文件，可以打开手动修改
+    >* dynamicFriction:动摩擦系数
+    >* staticFriction:静摩擦系数
+    >* bounciness:弹力系数
