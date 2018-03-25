@@ -9,7 +9,7 @@ public class ScenesController : MonoBehaviour
     static AsyncOperation ChangeProg;
     public static void LoadScene(string scenename)
     {
-        ChangeProg = SceneManager.LoadSceneAsync("FantasyPlanetScene");
+        ChangeProg = SceneManager.LoadSceneAsync(scenename);
         ChangeProg.allowSceneActivation = false;
     }
     public static void ChangeScene()

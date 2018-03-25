@@ -50,7 +50,7 @@ public class ButtonLayer : MonoBehaviour,IGUILayer {
             }
             else
             {
-                ScenesController.LoadScene("FantasyPlanetScene");
+                ScenesController.LoadScene("DiceScene");
             }
             BackgroundLayer.endBackground();
         }

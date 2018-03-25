@@ -292,6 +292,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Const.cs" />
+    <Compile Include="Assets\Scripts\DiceScrpts\CameraControl.cs" />
+    <Compile Include="Assets\Scripts\DiceScrpts\DiceControl.cs" />
     <Compile Include="Assets\Scripts\FantasyPlanetScripts\ClasstableModel.cs" />
     <Compile Include="Assets\Scripts\FantasyPlanetScripts\LoopChainTable.cs" />
     <Compile Include="Assets\Scripts\FantasyPlanetScripts\MenuManager.cs" />
