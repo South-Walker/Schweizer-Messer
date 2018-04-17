@@ -334,3 +334,25 @@ unity学习笔记
     >* dynamicFriction:动摩擦系数
     >* staticFriction:静摩擦系数
     >* bounciness:弹力系数
+
+#### 2018-3-25
+
+>```c#
+>//这个属性是指是否冻结物体，值是一个枚举类型
+> Rigidbody rigidbody.constrains=RigidbodyConstrains.FreezePosition;
+>```
+
+#### 2018-4-17
+
+>* shader：着色器，操作GPU绘制图形的接口
+>* unity中的shader是对shader的再封装
+>* shader language:与编程语言操作cpu对应，着色器语言就是操作gpu的语言，但是封装层级较编程语言低
+    >* 常见的着色器语言有：HLSL(DirectX)、GLSL（OpenGL Shading Language）、Cg(NVIDIA)
+    >* 在unity shaer中,使用的着色器语言是"Cg/HLSL"或者"GLSL"，因为多封装了一层，所以实际上并不是真正对应着实际的着色器语言
+>* unity 4.x中默认是没有天空盒的，而unity 5.x默认自带一个天空盒，可以在Window=>Lighting=>Settings设置
+>* 创建自己的着色器：Project（右击）=>Create=>Shader，其中一共有四种模板：
+    >* Standard Surface Shader:包含标准光照的模板
+    >* Unlit Shader:不包含光照但包含雾效的基本的顶点/片元着色器
+    >* Image Effect Shader:实现屏幕后处理效果
+    >* Compute Shader:利用GPU的并行性来进行与常规渲染流水线无关的计算
+>* shader本身是个文本文件，一半使用的是Unlit Shader
