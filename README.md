@@ -355,4 +355,19 @@ unity学习笔记
     >* Unlit Shader:不包含光照但包含雾效的基本的顶点/片元着色器
     >* Image Effect Shader:实现屏幕后处理效果
     >* Compute Shader:利用GPU的并行性来进行与常规渲染流水线无关的计算
->* shader本身是个文本文件，一半使用的是Unlit Shader
+>* shader本身是个文本文件，一般使用的是Unlit Shader
+
+#### 2018-4-30
+
+>* Dropdown控件，如果clear后手动添加数据，设置初始值为0时会因为其默认的初始值已经是0，所以不会发生ValueChange事件，解决方法是设置value值为-1
+>* 滚动条的制作
+    >* 放入Scrollbar控件
+    >* 给想要滚动的的控件设置ScrollRect与Mask
+        >* ScrollRect绑定Scrollbar表示其带领控件的子元素运动
+        >* Mask防止不应出现的内容出现在控件外
+    >* 如果目标内容是不定长的text，那么需要在代码端控制内容的Height防止显示不全
+    >```c#
+    >t_TextEvent.text = text;
+    >float f = t_TextEvent.preferredHeight;
+    >t_TextEvent.rectTransform.sizeDelta = new Vector2(t_SequenceOrTrackName.rectTransform.rect.width, f);
+    >```
