@@ -371,3 +371,17 @@ unity学习笔记
     >float f = t_TextEvent.preferredHeight;
     >t_TextEvent.rectTransform.sizeDelta = new Vector2(t_SequenceOrTrackName.rectTransform.rect.width, f);
     >```
+
+#### 2018-5-1
+
+>* OnAudioFilterRead(float[] data, int channels);Unity的事件接口，当前挂载控件上有Audio Listener时会生效，每一帧的数据存放在data中，可以修改
+
+#### 2018-7-31
+
+>* 考研空闲刷刷OpenGL
+>* freeglut、glew、GLTools、glut的环境已经丢百度网盘了，需要的时候去下，把lib与h放到VS对应位置就好了，gltools记得要自己编译一份lib。
+>* 在win32环境下使用glut库需要在初始声明
+>'''c
+>#define GLUT_DISABLE_ATEXIT_HACK
+>'''
+>* 在创建OpenGL时使用空的c++控制台应用程序模板，预编译头可加可不加，记得右击解决方案，点击属性，链接器，输入，向附加依赖项添加opengl32.lib，glut32.lib和glu32.lib
